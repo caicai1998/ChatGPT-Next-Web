@@ -1,0 +1,40 @@
+.title{
+  background: #4994EC;
+  width: 100%;
+  display: flex;
+  color: white;
+  height: 50px;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.side{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-shrink: 1;
+}
+
+.main{
+ display: grid;
+ gap: 18px;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ justify-items: center;
+}
+
+
+@media only screen and (min-width: 600px) {
+  .title {
+    display: none;
+  }
+  .side{
+    display: none;
+  }
+  .main{
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-items: center;
+  }
+}

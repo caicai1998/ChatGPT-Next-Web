@@ -2,7 +2,7 @@
 
 require("../polyfill");
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./home.module.scss";
 
@@ -18,17 +18,17 @@ import { ErrorBoundary } from "./error";
 import { getLang } from "../locales";
 
 import {
+  Route,
   HashRouter as Router,
   Routes,
-  Route,
   useLocation,
 } from "react-router-dom";
-import { SideBar } from "./sidebar";
+import { api } from "../client/api";
+import { getClientConfig } from "../config/client";
+import { useAccessStore } from "../store";
 import { useAppConfig } from "../store/config";
 import { AuthPage } from "./auth";
-import { getClientConfig } from "../config/client";
-import { api } from "../client/api";
-import { useAccessStore } from "../store";
+import { SideBar } from "./sidebar";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -44,6 +44,10 @@ const Settings = dynamic(async () => (await import("./settings")).Settings, {
 });
 
 const Chat = dynamic(async () => (await import("./chat")).Chat, {
+  loading: () => <Loading noLogo />,
+});
+
+const Index = dynamic(async () => await import("./QuakeHome"), {
   loading: () => <Loading noLogo />,
 });
 
@@ -141,6 +145,7 @@ function Screen() {
 
           <div className={styles["window-content"]} id={SlotID.AppBody}>
             <Routes>
+              <Route path={Path.Index} element={<Index />} />
               <Route path={Path.Home} element={<Chat />} />
               <Route path={Path.NewChat} element={<NewChat />} />
               <Route path={Path.Masks} element={<MaskPage />} />

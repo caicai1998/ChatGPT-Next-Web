@@ -2,14 +2,10 @@ import { useEffect, useRef } from "react";
 
 import styles from "./home.module.scss";
 
-import { IconButton } from "./button";
-import SettingsIcon from "../icons/settings.svg";
-import GithubIcon from "../icons/github.svg";
-import ChatGptIcon from "../icons/chatgpt.svg";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
-import MaskIcon from "../icons/mask.svg";
-import PluginIcon from "../icons/plugin.svg";
+import SettingsIcon from "../icons/settings.svg";
+import { IconButton } from "./button";
 
 import Locale from "../locales";
 
@@ -20,13 +16,12 @@ import {
   MIN_SIDEBAR_WIDTH,
   NARROW_SIDEBAR_WIDTH,
   Path,
-  REPO_URL,
 } from "../constant";
 
+import dynamic from "next/dynamic";
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
-import dynamic from "next/dynamic";
-import { showConfirm, showToast } from "./ui-lib";
+import { showConfirm } from "./ui-lib";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -116,30 +111,34 @@ export function SideBar(props: { className?: string }) {
       }`}
     >
       <div className={styles["sidebar-header"]} data-tauri-drag-region>
-        <div className={styles["sidebar-title"]} data-tauri-drag-region>
-          ChatGPT Next
+        <div
+          className={styles["sidebar-title"]}
+          style={{ width: "100%", textAlign: "center" }}
+          data-tauri-drag-region
+        >
+          氢信ChatGPT助手
         </div>
-        <div className={styles["sidebar-sub-title"]}>
+        {/* <div className={styles["sidebar-sub-title"]}>
           Build your own AI assistant.
         </div>
         <div className={styles["sidebar-logo"] + " no-dark"}>
           <ChatGptIcon />
-        </div>
+        </div> */}
       </div>
 
       <div className={styles["sidebar-header-bar"]}>
         <IconButton
-          icon={<MaskIcon />}
-          text={shouldNarrow ? undefined : Locale.Mask.Name}
+          // icon={<PluginIcon />}
+          text={shouldNarrow ? undefined : "频道"}
           className={styles["sidebar-bar-button"]}
-          onClick={() => navigate(Path.NewChat, { state: { fromHome: true } })}
+          // onClick={() => showToast(Locale.WIP)}
           shadow
         />
         <IconButton
-          icon={<PluginIcon />}
-          text={shouldNarrow ? undefined : Locale.Plugin.Name}
+          // icon={<MaskIcon />}
+          text={shouldNarrow ? undefined : "角色广场"}
           className={styles["sidebar-bar-button"]}
-          onClick={() => showToast(Locale.WIP)}
+          onClick={() => navigate(Path.Index)}
           shadow
         />
       </div>
@@ -172,11 +171,11 @@ export function SideBar(props: { className?: string }) {
               <IconButton icon={<SettingsIcon />} shadow />
             </Link>
           </div>
-          <div className={styles["sidebar-action"]}>
+          {/* <div className={styles["sidebar-action"]}>
             <a href={REPO_URL} target="_blank">
               <IconButton icon={<GithubIcon />} shadow />
             </a>
-          </div>
+          </div> */}
         </div>
         <div>
           <IconButton

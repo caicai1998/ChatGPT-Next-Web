@@ -1,66 +1,77 @@
-import { useDebouncedCallback } from "use-debounce";
 import React, {
-  useState,
-  useRef,
+  useCallback,
   useEffect,
   useMemo,
-  useCallback,
+  useRef,
+  useState,
 } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
-import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
-import RenameIcon from "../icons/rename.svg";
-import ExportIcon from "../icons/share.svg";
-import ReturnIcon from "../icons/return.svg";
-import CopyIcon from "../icons/copy.svg";
-import LoadingIcon from "../icons/three-dots.svg";
-import PromptIcon from "../icons/prompt.svg";
-import MaskIcon from "../icons/mask.svg";
-import MaxIcon from "../icons/max.svg";
-import MinIcon from "../icons/min.svg";
-import ResetIcon from "../icons/reload.svg";
 import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
 import DeleteIcon from "../icons/clear.svg";
+import CopyIcon from "../icons/copy.svg";
+import MaskIcon from "../icons/mask.svg";
+import MaxIcon from "../icons/max.svg";
+import MinIcon from "../icons/min.svg";
 import PinIcon from "../icons/pin.svg";
-import EditIcon from "../icons/rename.svg";
+import PromptIcon from "../icons/prompt.svg";
+import ResetIcon from "../icons/reload.svg";
+import {
+  default as EditIcon,
+  default as RenameIcon,
+} from "../icons/rename.svg";
+import ReturnIcon from "../icons/return.svg";
+import SendWhiteIcon from "../icons/send-white.svg";
+import ExportIcon from "../icons/share.svg";
+import LoadingIcon from "../icons/three-dots.svg";
 
-import LightIcon from "../icons/light.svg";
-import DarkIcon from "../icons/dark.svg";
 import AutoIcon from "../icons/auto.svg";
 import BottomIcon from "../icons/bottom.svg";
+import DarkIcon from "../icons/dark.svg";
+import LightIcon from "../icons/light.svg";
 import StopIcon from "../icons/pause.svg";
 import RobotIcon from "../icons/robot.svg";
 
 import {
-  ChatMessage,
-  SubmitKey,
-  useChatStore,
   BOT_HELLO,
-  createMessage,
-  useAccessStore,
-  Theme,
-  useAppConfig,
+  ChatMessage,
   DEFAULT_TOPIC,
   ModelType,
+  SubmitKey,
+  Theme,
+  createMessage,
+  useAccessStore,
+  useAppConfig,
+  useChatStore,
 } from "../store";
 
 import {
+  autoGrowTextArea,
   copyToClipboard,
   selectOrCopy,
-  autoGrowTextArea,
   useMobileScreen,
 } from "../utils";
 
 import dynamic from "next/dynamic";
 
 import { ChatControllerPool } from "../client/controller";
-import { Prompt, usePromptStore } from "../store/prompt";
 import Locale from "../locales";
+import { Prompt, usePromptStore } from "../store/prompt";
 
 import { IconButton } from "./button";
 import styles from "./chat.module.scss";
 
+import { useLocation, useNavigate } from "react-router-dom";
+import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
+import { getClientConfig } from "../config/client";
+import { LAST_INPUT_KEY, Path, REQUEST_TIMEOUT_MS } from "../constant";
+import { useMaskStore } from "../store/mask";
+import { prettyObject } from "../utils/format";
+import { Avatar } from "./emoji";
+import { ExportMessageModal } from "./exporter";
+import { MaskAvatar, MaskConfig } from "./mask";
 import {
   ListItem,
   Modal,
@@ -69,15 +80,6 @@ import {
   showPrompt,
   showToast,
 } from "./ui-lib";
-import { useLocation, useNavigate } from "react-router-dom";
-import { LAST_INPUT_KEY, Path, REQUEST_TIMEOUT_MS } from "../constant";
-import { Avatar } from "./emoji";
-import { MaskAvatar, MaskConfig } from "./mask";
-import { useMaskStore } from "../store/mask";
-import { ChatCommandPrefix, useChatCommand, useCommand } from "../command";
-import { prettyObject } from "../utils/format";
-import { ExportMessageModal } from "./exporter";
-import { getClientConfig } from "../config/client";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -515,6 +517,7 @@ export function ChatActions(props: {
           }}
         />
       )}
+      <div style={{}}>使用次数1/2</div>
     </div>
   );
 }
